@@ -12,6 +12,7 @@ interface ControlsProps {
   isAiLoading: boolean;
   language: LanguageCode;
   setLanguage: (l: LanguageCode) => void;
+  isSetupMode?: boolean;
 }
 
 const COLORS = [
@@ -33,7 +34,8 @@ export const Controls: React.FC<ControlsProps> = ({
   onGenerateFact,
   isAiLoading,
   language,
-  setLanguage
+  setLanguage,
+  isSetupMode = false
 }) => {
   const [activeTab, setActiveTab] = useState<0 | 1>(0);
   const t: Translation = translations[language];
@@ -196,7 +198,7 @@ export const Controls: React.FC<ControlsProps> = ({
 
       <div className="border-t border-slate-100 my-4 md:my-6 flex-shrink-0"></div>
 
-      {/* AI Action */}
+      {/* AI Action or Submit Button */}
       <button
         onClick={onGenerateFact}
         disabled={isAiLoading}
@@ -205,9 +207,9 @@ export const Controls: React.FC<ControlsProps> = ({
         {isAiLoading ? (
             <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
         ) : (
-            <Sparkles size={18} className="text-yellow-400 group-hover:rotate-12 transition-transform" />
+            <Sparkles size={18} className={isSetupMode ? "text-blue-400 group-hover:rotate-12 transition-transform" : "text-yellow-400 group-hover:rotate-12 transition-transform"} />
         )}
-        {isAiLoading ? t.analyzing : t.compare}
+        {isAiLoading ? t.analyzing : (isSetupMode ? 'View Results' : t.compare)}
       </button>
 
     </div>
